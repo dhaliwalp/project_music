@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artist Genres</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Enter Three Artists</h1>
+    <form method="post">
+        <input type="text" name="artist1" placeholder="Artist 1" required>
+        <input type="text" name="artist2" placeholder="Artist 2" required>
+        <input type="text" name="artist3" placeholder="Artist 3" required>
+        <button type="submit">Get Songs</button>
+    </form>
+
+    {% if songs %}
+    <h2>Songs by Artist and Genre</h2>
+    {% for artist_data in songs %}
+    <h3>{{ artist_data['artist'] }}</h3>
+    <ul>
+        {% for song in artist_data['songs'] %}
+        <li>{{ song['name'] }} - {{ ', '.join([artist['name']]) for artist in song['artists'] }}</li>
+
+        {% endfor %}
+    </ul>
+    {% endfor %}
+    {% endif %}
+</body>
+</html>
