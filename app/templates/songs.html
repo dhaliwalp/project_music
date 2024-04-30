@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artist Genres</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Poppins, sans-serif;
+      }
+
+      .submit-button {
+        height: 40px;
+        border: none;
+        background-color: #1862d7;
+        color: white;
+        font-family: Poppins, sans-serif;
+        font-size: 20px;
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 40px;
+        transition: ease 0.2s;
+        cursor: pointer;
+      }
+
+      .submit-button:hover {
+        background-color: #1852b0;
+      }
+
+      .clear-button {
+        height: 40px;
+        border: none;
+        background-color: #1862d7;
+        color: white;
+        font-family: Poppins, sans-serif;
+        font-size: 20px;
+        width: 80%;
+        margin: 0 auto;
+        border-radius: 40px;
+        transition: ease 0.2s;
+        cursor: pointer;
+      }
+
+      .clear-button:hover {
+        background-color: #1852b0;
+      }
+
+      .volume-control-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+      }
+
+      .clear-button-container,
+      .form-container {
+        text-align: center;
+      }
+
+      .input-container {
+        text-align: center;
+        padding-top: 20px;
+        padding-bottom: 10px;
+      }
+
+      .input-container input {
+        height: 30px;
+        font-family: Poppins, sans-serif;
+        width: 80%;
+        border-radius: 10px;
+        padding: 5px;
+        font-size: 18px;
+      }
+
+      .form-container,
+      .clear-button-container {
+        max-width: 300px;
+        min-height: 20px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 20px;
+        background-color: rgba(255, 255, 255, 0.45);
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(15px);
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .title {
+        color: #1862d7;
+        font-size: 36px;
+      }
+      .title2 {
+        color: #1862d7;
+        font-size: 32px;
+      }
+      .songs {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+      }
+      li {
+        width: 800px;
+        display: flex;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.45);
+        box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
+        border-radius: 30px;
+        padding: 24px 40px;
+        position: relative;
+        font-weight: 500;
+        color: #1862d7;
+        margin: 20px 0;
+        text-align: left;
+      }
+      .play-button {
+        font-family: Poppins, sans-serif;
+        padding: 10px 14px;
+        font-size: 16px;
+        border-radius: 100px;
+        border: 1px solid #181818;
+        cursor: pointer;
+        background-color: #1862d7;
+        color: white;
+        transition: ease 0.2s;
+        position: absolute;
+        right: 20px;
+        bottom: 12px;
+      }
+      .play-button:hover {
+        background-color: #1852b0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="volume-control-container">
+      <input
+        id="volume-slider"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value=".25"
+      />
+    </div>
+
+    <h1 class="title">Enter Three Artists</h1>
+    <form class="form-container" method="post">
+      <div class="input-container">
+        <input
+          class="artist-input"
+          type="text"
+          name="artist1"
+          placeholder="Artist 1"
+          required
+        />
+      </div>
+      <div class="input-container">
+        <input
+          class="artist-input"
+          type="text"
+          name="artist2"
+          placeholder="Artist 2"
+          required
+        />
+      </div>
+      <div class="input-container" style="margin-bottom: 20px">
+        <input
+          class="artist-input"
+          type="text"
+          name="artist3"
+          placeholder="Artist 3"
+          required
+        />
+      </div>
+      <button class="submit-button" type="submit">Get Songs</button>
+    </form>
+    <div class="songs">
+      {% if songs %}
+      <h2 class="title2">Songs Similar to your Taste</h2>
+      <ul id="songs-list">
+        {% for song in songs %}
+        <li>
+          {{ song['name'] }} - {{ song['artists'] }} {% if song['preview_url']
+          %}
+          <div>
+            <button
+              class="play-button"
+              data-preview-url="{{ song['preview_url'] }}"
+            >
+              Play
+            </button>
+          </div>
+          {% else %}
+          <span>(Preview not available)</span>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+
+    <div class="clear-button-container">
+      <button class="clear-button">Clear Songs</button>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var currentlyPlayingAudio = null;
+
+        function getVolume() {
+          var volumeSlider = document.querySelector("#volume-slider");
+          return parseFloat(volumeSlider.value);
+        }
+
+        var volumeSlider = document.querySelector("#volume-slider");
+        volumeSlider.addEventListener("input", function () {
+          if (currentlyPlayingAudio) {
+            currentlyPlayingAudio.volume = getVolume();
+          }
+        });
+
+        var playButtons = document.querySelectorAll(".play-button");
+        playButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            var previewUrl = button.dataset.previewUrl;
+            if (previewUrl) {
+              if (currentlyPlayingAudio) {
+                if (currentlyPlayingAudio.src === previewUrl && !currentlyPlayingAudio.paused) {
+                  currentlyPlayingAudio.pause();
+                } else {
+                  currentlyPlayingAudio.pause();
+                  currentlyPlayingAudio = new Audio(previewUrl);
+                  currentlyPlayingAudio.volume = getVolume();
+                  currentlyPlayingAudio.play();
+
+                  setTimeout(function () {
+                    currentlyPlayingAudio.pause();
+                  }, 30000);
+                }
+              } else {
+                currentlyPlayingAudio = new Audio(previewUrl);
+                currentlyPlayingAudio.volume = getVolume();
+                currentlyPlayingAudio.play();
+
+                setTimeout(function () {
+                  currentlyPlayingAudio.pause();
+                }, 30000);
+              }
+            }
+          });
+        });
+
+        var clearButton = document.querySelector(".clear-button");
+        clearButton.addEventListener("click", function () {
+          var songsList = document.getElementById("songs-list");
+          if (songsList) {
+            songsList.remove();
+          }
+          if (currentlyPlayingAudio) {
+            currentlyPlayingAudio.pause();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
